@@ -79,13 +79,16 @@ client.on("message",msg => {
     
 if (msg.content === "!hello"){
     msg.reply("Hi,👨‍⚕️ Dr.Bot at your service. How can I help you?");
+
 }
-else if (msg.content === "!thankyou dr.Bot"){
-    msg.react("❤️");
+else if (msg.content === "!about the vaccine"){
+    msg.reply("");
+
+
 }
 // help command
 else if (msg.content === "!help"){
-    msg.reply("Hey there ,how can I help you ? please use these command words --[!about getting the vaccine]---,--[!vaccine registration]--,---[!available vaccine slots]--,---[!covid symptoms]--")
+    msg.reply("Hey there ,how can I help you ? please use these command words --[!about the vaccine]---,--[!vaccine registration]--,---[!available vaccine slots]--,---[!covid symptoms]--")
 }
 // user should type in this format to get the details so we just give some instructions to user
 else if (msg.content === "!available vaccine slots"){
@@ -95,7 +98,23 @@ else if (msg.content === "!vaccine registration"){
         msg.reply("https://selfregistration.cowin.gov.in/");
 }
 else if (msg.content === "!covid symptoms"){
-    msg.reply("📍Most common symptoms ▪️fever  ▪️dry cough  ▪️tiredness  📍Less common symptoms: ▪️aches and pains");
+    msg.reply("📍Most common symptoms",
+                    "▪️fever" ,       
+                    "▪️dry cough", 
+                    "▪️tiredness" , 
+               "📍Less common symptoms:", 
+                    "▪️aches and pains sore throat",
+                    "▪️diarrhoea",
+                    "▪️conjunctivitis",
+                    "▪️headache",
+                    "▪️loss of taste or smell",
+                    "▪️a rash on skin",
+                    "▪️discolouration of fingers or toes",
+                "📍Serious symptoms",
+                    "difficulty breathing",
+                    "chest pain",
+                    "loss of speech",
+                    "Vaccine");
 }
 else{
 //  if (msg.content === "vacccine slot"){
