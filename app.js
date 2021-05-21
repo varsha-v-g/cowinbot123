@@ -1,4 +1,4 @@
-const district = [
+const district = [// the details in APIs are made to array for the easy use 
     {
         "district_id": 301,
         "district_name": "Alappuzha"
@@ -72,7 +72,7 @@ const client =  new Discord.Client();
 
 const resolveDistrictID = (districtName) => {
     return district[district.map(d => d.district_name).indexOf(districtName)].district_id;
-};
+};// conveted the district name to district ID
 
 const cronJob = (msg) => {
 
@@ -95,7 +95,8 @@ const cronJob = (msg) => {
                 const element = response.data.sessions[index];
                 //    str+=
                 msg.reply(
-                    `AVAILABLE VACCINE SLOTS💉
+                   
+             `AVAILABLE VACCINE SLOTS💉
             --------------------------
              name :-  ${element.name}
              pincode:- ${element.pincode}
@@ -109,7 +110,7 @@ const cronJob = (msg) => {
         })
         .catch (err => {
             console.log(err);
-            msg.reply("Not working")
+            msg.reply("Not working,Try again")
         });
 }
 
@@ -123,21 +124,23 @@ client.on( "ready", () => {
 client.on("message", msg => {
 
     if (msg.content === "!hello"){
-        msg.reply("Hi,👨‍⚕️ Dr.Bot at your service. How can I help you?");
+        msg.reply("Hi,👨‍⚕️ Dr.Bot at your service.[USE--!help--for further commands]");
     }
 
-    else if (msg.content === "!about the vaccine"){
-        msg.reply("");
+    else if (msg.content === "!about vaccine"){
+        msg.reply("Covishield vaccine is 6 to 8 weeks",
+                 "Covaxin can be taken after 28 days",
+                 "Gap between first to doses of Sputnik is 21 days-3 months");
     }
 
 // help command
     else if (msg.content === "!help"){
-        msg.reply("Hey there ,how can I help you ? please use these command words --[!about the vaccine]---,--[!vaccine registration]--,---[!available vaccine slots]--,---[!covid symptoms]--")
+        msg.reply("Hey there ,how can I help you ? please use these command words --[!about vaccine]---,--[!vaccine registration]--,---[!available vaccine slots]--,---[!covid symptoms]--")
     }
 
 // user should type in this format to get the details so we just give some instructions to user
     else if (msg.content === "!available vaccine slots") {
-        msg.reply("Please enter the details in this format DD-MM-YYYY<SPACE>District_Name [eg;31-03-2021 Thrissur]");
+        msg.reply("Please enter the details in this format---!vaccine_schedule<SPACE>DD-MM-YYYY<SPACE>District_Name---[eg;!vaccine_schedule 31-03-2021 Thrissur]");
     }
 
     else if (msg.content === "!vaccine registration"){
@@ -170,7 +173,7 @@ client.on("message", msg => {
         }
         cronJob(msg);
         cron.schedule("0 * * * *",() => cronJob(msg));
-    }
+    }// this cron job schedule the updates in every hour in a day 
 });
 
 app.listen(3000);
