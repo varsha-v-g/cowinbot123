@@ -130,9 +130,7 @@ client.on("message", msg => {
     }
 
     else if (msg.content === "!about vaccine"){
-        msg.reply("Covishield vaccine is 6 to 8 weeks",
-                 "Covaxin can be taken after 28 days",
-                 "Gap between first to doses of Sputnik is 21 days-3 months");
+        msg.reply("Covishield vaccine is 6 to 8 weeks","Covaxin can be taken after 28 days","Gap between first to doses of Sputnik is 21 days-3 months");
     }
 
 // help command
@@ -150,10 +148,8 @@ client.on("message", msg => {
     }
 
     else if (msg.content === "!covid symptoms"){
-        msg.reply("📍Most common symptoms: fever,dry cough,tiredness",
-                 "📍Less common symptoms:aches and pains sore throat,diarrhoea,conjunctivitis,headache,loss of taste or smell", 
-               "📍Serious symptoms: difficulty breathing,chest pain");
-    }
+        msg.reply("📍Most common symptoms: fever,dry cough,tiredness", "📍Less common symptoms:aches and pains sore throat,diarrhoea,conjunctivitis,headache,loss of taste or smell","📍Serious symptoms: difficulty breathing,chest pain");
+        }
 
     else if(msg.content.split(' ')[0] === "!vaccine_schedule") {
         if (msg.content.split(' ').length !== 3) {
