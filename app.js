@@ -1,4 +1,13 @@
-const district = [// the details in APIs are made to array for the easy use 
+// Require discord.js package
+const Discord = require("discord.js");
+const fetch = require("node-fetch");
+const cron = require('node-cron');
+const express = require('express');
+const { TOKEN_123} = require("./tkn.json");
+const axios = require('axios').default;
+app = express();
+
+const district = [   // the details in APIs are made to array for the easy use 
     {
         "district_id": 301,
         "district_name": "Alappuzha"
@@ -58,14 +67,7 @@ const district = [// the details in APIs are made to array for the easy use
 ];
 
 
-// Require discord.js package
-const Discord = require("discord.js");
-const fetch = require("node-fetch");
-const cron = require('node-cron');
-const express = require('express');
-const { TOKEN_123} = require("./tkn.json");
-const axios = require('axios').default;
-app = express();
+
 
 // create new client
 const client =  new Discord.Client();
@@ -110,7 +112,7 @@ const cronJob = (msg) => {
         })
         .catch (err => {
             console.log(err);
-            msg.reply("Not working,Try again")
+            msg.reply("Not working,⚠️Try again")
         });
 }
 
@@ -124,7 +126,7 @@ client.on( "ready", () => {
 client.on("message", msg => {
 
     if (msg.content === "!hello"){
-        msg.reply("Hi,👨‍⚕️ Dr.Bot at your service.[USE--!help--for further commands]");
+        msg.reply("Hi,👨‍⚕️ Dr.Bot at your service.[USE-👉-!help--for further commands]");
     }
 
     else if (msg.content === "!about vaccine"){
@@ -135,12 +137,12 @@ client.on("message", msg => {
 
 // help command
     else if (msg.content === "!help"){
-        msg.reply("Hey there ,how can I help you ? please use these command words --[!about vaccine]---,--[!vaccine registration]--,---[!available vaccine slots]--,---[!covid symptoms]--")
+        msg.reply("Hey there👋,please use these command words 👉--[!about vaccine]---,--[!vaccine registration]--,---[!available vaccine slots]--,---[!covid symptoms]--")
     }
 
 // user should type in this format to get the details so we just give some instructions to user
     else if (msg.content === "!available vaccine slots") {
-        msg.reply("Please enter the details in this format---!vaccine_schedule<SPACE>DD-MM-YYYY<SPACE>District_Name---[eg;!vaccine_schedule 31-03-2021 Thrissur]");
+        msg.reply("Please enter the details in this format-👉--!vaccine_schedule<SPACE>DD-MM-YYYY<SPACE>District_Name---[eg;!vaccine_schedule 31-03-2021 Thrissur]");
     }
 
     else if (msg.content === "!vaccine registration"){
@@ -149,22 +151,21 @@ client.on("message", msg => {
 
     else if (msg.content === "!covid symptoms"){
         msg.reply("📍Most common symptoms",
-            "▪️fever" ,
-            "▪️dry cough",
-            "▪️tiredness" ,
-            "📍Less common symptoms:",
-            "▪️aches and pains sore throat",
-            "▪️diarrhoea",
-            "▪️conjunctivitis",
-            "▪️headache",
-            "▪️loss of taste or smell",
-            "▪️a rash on skin",
-            "▪️discolouration of fingers or toes",
-            "📍Serious symptoms",
-            "difficulty breathing",
-            "chest pain",
-            "loss of speech",
-            "Vaccine");
+                    "▪️fever" ,
+                    "▪️dry cough",
+                    "▪️tiredness" ,
+                "📍Less common symptoms:",
+                    "▪️aches and pains sore throat",
+                    "▪️diarrhoea",
+                    "▪️conjunctivitis",
+                    "▪️headache",
+                    "▪️loss of taste or smell",
+                    "▪️a rash on skin",
+                    "▪️discolouration of fingers or toes",
+               "📍Serious symptoms",
+                    "difficulty breathing",
+                    "chest pain",
+                    "loss of speech");
     }
 
     else if(msg.content.split(' ')[0] === "!vaccine_schedule") {
