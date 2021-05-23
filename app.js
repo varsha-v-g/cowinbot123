@@ -7,7 +7,8 @@ const { TOKEN_123} = require("./tkn.json");
 const axios = require('axios').default;
 app = express();
 
-const district = [   // the details in APIs are made to array for the easy use 
+
+const district = [   // the details in APIs are made to array for the easy use
     {
         "district_id": 301,
         "district_name": "Alappuzha"
@@ -76,13 +77,14 @@ const resolveDistrictID = (districtName) => {
     return district[district.map(d => d.district_name).indexOf(districtName)].district_id;
 };// conveted the district name to district ID
 
-const cronJob = (msg) => {
+const cronJob = (msg, isSubscribe) => {
 
     let date = msg.content.split(" ")[1];
 
     let districtName = msg.content.split(" ")[2];
 
     let districtID = resolveDistrictID(districtName);
+
 
     axios({
         method: 'get',
@@ -91,13 +93,16 @@ const cronJob = (msg) => {
     })
         .then( response => {
             //   response;
-
+            if (response.data.sessions.length === 0) {
+                msg.reply(`Sorry! No vaccination slot available.`);
+                (!isSubscribe) ? msg.channel.send(`If you want an hourly update, Please use the command`):null;
+                (!isSubscribe) ? msg.channel.send(`**!subscribe ${date} ${districtName}**`):null;
+            }
             let str  =   "";//we made responses as strings
             for (let index = 0; index < response.data.sessions.length; index++) {
                 const element = response.data.sessions[index];
                 //    str+=
                 msg.reply(
-                   
              `AVAILABLE VACCINE SLOTS💉
             --------------------------
              name :-  ${element.name}
@@ -114,8 +119,9 @@ const cronJob = (msg) => {
             console.log(err);
             msg.reply("Not working,⚠️Try again")
         });
-}
 
+    return null;
+}
 
 
 client.on( "ready", () => {
@@ -126,16 +132,16 @@ client.on( "ready", () => {
 client.on("message", msg => {
 
     if (msg.content === "!hello"){
-        msg.reply("Hi,👨‍⚕️ Dr.Bot at your service.[USE-👉-!help--for further commands]");
+        msg.reply("Hi, 👨‍⚕️ Dr.Bot at your service.\n[USE 👉 **!help**  for further commands]");
     }
 
     else if (msg.content === "!about vaccine"){
-        msg.reply("Covishield vaccine is 6 to 8 weeks,Covaxin can be taken after 28 days,Gap between first to doses of Sputnik is 21 days-3 months");
+        msg.reply("\n🩸 **Covishield Vaccine** is 6 to 8 weeks, \n🩸 **Covaxin** can be taken after 28 days,Gap between first two doses of 🩸 **Sputnik** is 21 days-3 months");
     }
 
 // help command
     else if (msg.content === "!help"){
-        msg.reply("Hey there👋,please use these command words 👉--[!about vaccine]---,--[!vaccine registration]--,---[!available vaccine slots]--,---[!covid symptoms]--")
+        msg.reply("Hey there👋, please use these commands \n👉**!about vaccine**,\n👉**!vaccine registration**,\n👉**!available vaccine slots**,\n👉**!covid symptoms**")
     }
 
 // user should type in this format to get the details so we just give some instructions to user
@@ -148,16 +154,19 @@ client.on("message", msg => {
     }
 
     else if (msg.content === "!covid symptoms"){
-        msg.reply("📍Most common symptoms: fever , dry cough , tiredness ,📍Less common symptoms:aches and pains, sore throat,diarrhoea,conjunctivitis,headache,loss of taste or smell,📍Serious symptoms: difficulty breathing,chest pain");
+        msg.reply("\n**📍Most common symptoms:**\nfever , dry cough , tiredness.\n\n**📍Less common symptoms:**\naches and pains, sore throat,diarrhoea,conjunctivitis,\nheadache,loss of taste or smell,\n\n**📍Serious symptoms:**\ndifficulty breathing,chest pain");
         }
 
     else if(msg.content.split(' ')[0] === "!vaccine_schedule") {
         if (msg.content.split(' ').length !== 3) {
             msg.reply("I didn't understand");
         }
-        cronJob(msg);
-        cron.schedule("0 * * * *",() => cronJob(msg));
-    }// this cron job schedule the updates in every hour in a day 
+        cronJob(msg, isSubscribe=false);
+    }// this cron job schedule the updates in every hour in a day
+
+    else if(msg.content.split(" ")[0] === "!subscribe") {
+        cron.schedule("0 * * * *",() => cronJob(msg, isSubscribe=true));
+    }
 });
 
 app.listen(3000);
@@ -165,4 +174,3 @@ app.listen(3000);
 
 
 client.login(TOKEN_123);
-
