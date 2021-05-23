@@ -150,22 +150,9 @@ client.on("message", msg => {
     }
 
     else if (msg.content === "!covid symptoms"){
-        msg.reply("📍Most common symptoms",
-                    "▪️fever" ,
-                    "▪️dry cough",
-                    "▪️tiredness" ,
-                "📍Less common symptoms:",
-                    "▪️aches and pains sore throat",
-                    "▪️diarrhoea",
-                    "▪️conjunctivitis",
-                    "▪️headache",
-                    "▪️loss of taste or smell",
-                    "▪️a rash on skin",
-                    "▪️discolouration of fingers or toes",
-               "📍Serious symptoms",
-                    "difficulty breathing",
-                    "chest pain",
-                    "loss of speech");
+        msg.reply("📍Most common symptoms: fever,dry cough,tiredness",
+                 "📍Less common symptoms:aches and pains sore throat,diarrhoea,conjunctivitis,headache,loss of taste or smell", 
+               "📍Serious symptoms: difficulty breathing,chest pain");
     }
 
     else if(msg.content.split(' ')[0] === "!vaccine_schedule") {
