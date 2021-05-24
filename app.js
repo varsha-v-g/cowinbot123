@@ -79,11 +79,8 @@ const resolveDistrictID = (districtName) => {
 const cronJob = (msg, isSubscribe) => {
 
     let date = msg.content.split(" ")[1];
-
     let districtName = msg.content.split(" ")[2];
-
     let districtID = resolveDistrictID(districtName);
-
 
     axios({
         method: 'get',
@@ -97,31 +94,33 @@ const cronJob = (msg, isSubscribe) => {
                 (!isSubscribe) ? msg.channel.send(`If you want an hourly update, Please use the command`):null;
                 (!isSubscribe) ? msg.channel.send(`**!subscribe ${date} ${districtName}**`):null;
             }
-            let str  =   "";//we made responses as strings
-            let isNoneAvailable = true;
-            for (let index = 0; index < response.data.sessions.length; index++) {
-                if (response.data.sessions[index].available_capacity !== 0) {
-                    isNoneAvailable = false;
-                    const element = response.data.sessions[index];
+            else {
+                let str  =   "";//we made responses as strings
+                let isNoneAvailable = true;
+                for (let index = 0; index < response.data.sessions.length; index++) {
+                    if (response.data.sessions[index].available_capacity !== 0) {
+                        isNoneAvailable = false;
+                        const element = response.data.sessions[index];
                         const slotInfo =  `\n**AVAILABLE VACCINE SLOTS**💉\n--------------------------\n\n**Name**:-  ${element.name}\n**Pincode**:- ${element.pincode}\n**Date** :-  ${element.date}\n**Minimum age limit** :-${element.min_age_limit}\n**Fee_type** :-${element.fee_type}\n**Vaccine** :-${element.vaccine}\n**Slot** :-  ${element.slots}\n\n`;
                         str += slotInfo;
+                    }
+                }
+                if (isNoneAvailable) {
+                    msg.reply(`Sorry! No vaccination slot available.`);
+                    (!isSubscribe) ? msg.channel.send(`If you want an hourly update, Please use the command`):null;
+                    (!isSubscribe) ? msg.channel.send(`**!subscribe ${date} ${districtName}**`):null;
+                }
+                else {
+                    msg.reply(str);
                 }
             }
-            if (isNoneAvailable) {
-                msg.reply(`Sorry! No vaccination slot available.`);
-                (!isSubscribe) ? msg.channel.send(`If you want an hourly update, Please use the command`):null;
-                (!isSubscribe) ? msg.channel.send(`**!subscribe ${date} ${districtName}**`):null;
-            }
-            else {
-                msg.reply(str);
-            }
+
         })
         .catch (err => {
             console.log(err);
             msg.reply("Sorry for the inconvenience, ⚠️Try again");
         });
 
-    return null;
 }
 
 
@@ -173,7 +172,7 @@ client.on("message", msg => {
 
     else if(msg.content.split(" ")[0].toLowerCase() === "!subscribe") {
         // this cron job schedule the updates in every hour in a day
-        cron.schedule("0 * * * *",() => cronJob(msg, isSubscribe=true));
+        cron.schedule("0 * * * *", () => cronJob(msg, isSubscribe=true));
     }
 });
 
