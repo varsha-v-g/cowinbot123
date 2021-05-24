@@ -100,23 +100,22 @@ const cronJob = (msg, isSubscribe) => {
                 (!isSubscribe) ? msg.channel.send(`**!subscribe ${date} ${districtName}**`):null;
             }
             let str  =   "";//we made responses as strings
+            let isNoneAvailable = true;
             for (let index = 0; index < response.data.sessions.length; index++) {
-                console.log(response.data.sessions[index])
                 if (response.data.sessions[index].available_capacity !== 0) {
+                    isNoneAvailable = false;
                     const element = response.data.sessions[index];
-                    //    str+=
-                    msg.reply(
-                        `AVAILABLE VACCINE SLOTS💉
-            --------------------------
-             name :-  ${element.name}
-             pincode:- ${element.pincode}
-             date :-  ${element.date}
-             minimum age limit :-${element.min_age_limit}
-             fee_type :-${element.fee_type}
-             vaccine :-${element.vaccine}
-             slot :-  ${element.slots}
-           `)
+                        const slotInfo =  `\n**AVAILABLE VACCINE SLOTS**💉\n--------------------------\n\nname :-  ${element.name}\npincode:- ${element.pincode}\ndate :-  ${element.date}\nminimum age limit :-${element.min_age_limit}\nfee_type :-${element.fee_type}\nvaccine :-${element.vaccine}\nslot :-  ${element.slots}\n\n`;
+                        str += slotInfo;
                 }
+            }
+            if (isNoneAvailable) {
+                msg.reply(`Sorry! No vaccination slot available.`);
+                (!isSubscribe) ? msg.channel.send(`If you want an hourly update, Please use the command`):null;
+                (!isSubscribe) ? msg.channel.send(`**!subscribe ${date} ${districtName}**`):null;
+            }
+            else {
+                msg.reply(str);
             }
         })
         .catch (err => {
