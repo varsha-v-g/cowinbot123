@@ -152,7 +152,7 @@ client.on("message", msg => {
         msg.reply("https://selfregistration.cowin.gov.in/");
     }
 
-    else if (msg.content.toLowerCase() === "!thankyou Dr.Bot"){
+    else if (msg.content.toLowerCase() === "!thankyou dr.bot"){
         msg.react("❤️");
         msg.reply("With pleasure 🥰. **Don't hesitate, let's vaccinate !!**");
     }
